@@ -1,0 +1,50 @@
+# Test runner configuration.
+#
+# One job: keep the reporting harnesses out of the default run, VISIBLY.
+#
+# `no-oracle` marks a test file whose deliverable is PRINTED OUTPUT. Those
+# files assert only that a capture still replays and produces a positive
+# distance; the numbers are read by a person comparing a change against the
+# run before it. Nothing in them can go red for a real defect, so they replay
+# every committed capture and print ~200 lines of table on every run to return
+# a signal they are structurally unable to produce.
+#
+# They are skipped rather than DELETED, and the distinction matters:
+#
+#   - `capture_threshold_report_test` is the harness for A1c-L and
+#     `network_stream_report_test` for A1c-M. Both questions are REJECTED and
+#     closed — but A1c-M names the evidence that would reopen it ("a capture
+#     with a long OUTDOOR GPS outage"), and when that capture is walked this
+#     harness is what scores it. A rejected ruling with a named falsification
+#     test is not a finished question.
+#   - `capture_distance_report_test` is the before-and-after across every
+#     committed capture at once, which is how A1c-J was measured.
+#
+# Run them deliberately:
+#
+#     flutter test --run-skipped --tags no-oracle
+#
+# **`skip` rather than `exclude_tags`, and it is not a stylistic choice.**
+# `exclude_tags: no-oracle` was tried first and measured: it drops the seven
+# tests from the default run correctly, and then `flutter test --tags
+# no-oracle` fails with `include: "<all>" / exclude: "no-oracle"` — the config
+# exclusion beats the command line, and naming the file by path does not
+# escape it either. So the opt-in route does not exist, and the only way back
+# to these harnesses would have been editing this file. A skip is visible in
+# the runner's output with this reason attached, which is strictly better than
+# an exclusion nobody can see and nobody can override.
+#
+# NOT the same axis as `report`, and that is deliberate. Five files print a
+# table; only three of them lack an oracle. `stopped_time_test` prints AND
+# pins A1c-O's invariant on all six captures, and `reported_speed_test` pins
+# A1c-N — skipping those by tag would have silently dropped live coverage,
+# which is precisely the shape of defect the audit that produced this file
+# went looking for.
+tags:
+  no-oracle:
+    skip: "reporting harness, no oracle: flutter test --run-skipped --tags no-oracle"
+
+  # Declared so the runner does not warn about an unrecognised tag. It means
+  # "prints a table for a human to read", which is true of two files that also
+  # assert real invariants and are NOT skipped.
+  report:

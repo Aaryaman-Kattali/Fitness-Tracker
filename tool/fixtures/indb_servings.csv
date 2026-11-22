@@ -1,0 +1,13 @@
+food_code,food_name,energy_kcal,protein_g,carb_g,fat_g,fibre_g,freesugar_g,sfa_mg,sodium_mg,servings_unit,unit_serving_energy_kcal,unit_serving_protein_g,unit_serving_carb_g,unit_serving_fat_g
+S001,Chapati whole wheat,297,11.0,58.0,3.5,9.0,0.8,600,210,piece,103.95,3.85,20.3,1.225
+S002,Rice cooked plain,130,2.7,28.0,0.3,0.4,0.1,80,1,bowl,260,5.4,56,0.6
+S003,Dal tadka cooked,116,7.0,19.0,0.8,4.6,0.6,150,320,bowl,464,28,76,3.2
+S004,Curd plain,61,3.5,4.7,3.3,0.0,4.7,2100,45,small bowl,73.2,4.2,5.64,3.96
+S005,Milk buffalo,62,3.2,4.8,3.4,0.0,4.8,2200,44,glass,155,8,12,8.5
+S006,Idli steamed,146,4.5,30.0,0.6,1.2,0.3,120,90,piece,58.4,1.8,12,0.24
+S007,Chana masala,160,8.0,20.0,5.0,6.0,1.0,900,480,bowl,400,20,50,12.5
+S008,Rajma masala,140,7.0,18.0,4.0,6.5,0.9,700,430,bowl,252,12.6,32.4,7.2
+S009,Sambhar,60,3.0,8.0,1.5,2.0,0.7,300,390,small bowl,72,3.6,9.6,1.8
+S010,Chole bhature,250,8.0,30.0,11.0,5.0,1.2,2600,520,plate,750,24,90,33
+S011,Jaljeera drink,40,1.0,9.0,0.2,0.3,6.0,50,290,glass,120,2,18,0.4
+S012,Upma,130,3.0,22.0,3.5,1.8,0.5,800,310,,260,6,44,7

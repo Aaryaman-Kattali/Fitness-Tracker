@@ -1,0 +1,10 @@
+food_code,food_name,energy_kcal,protein_g,carb_g,fat_g,fibre_g,freesugar_g,sfa_mg,sodium_mg,servingsize_g
+D001,Pulao rice kilojoules misparsed,598,9.0,20.0,3.0,2.0,0.5,700,300,
+D002,Reconciliation just inside the band,235.1,8.0,50.0,4.0,6.0,0.7,500,190,
+D003,Reconciliation just outside the band,231.0,8.0,50.0,4.0,6.0,0.7,500,190,
+D004,Black tea no sugar,15,0.1,0.5,0.1,0.0,0.0,10,3,
+D005,Fat exceeding the food it is in,880,0.0,0.0,120.0,0.0,0.0,60000,2,
+D006,Protein below zero,100,-1.0,20.0,1.0,1.0,0.2,200,50,
+D007,Denser than pure fat,950,0.0,0.0,100.0,0.0,0.0,50000,1,
+D008,Energy zero with macros present,0,5.0,10.0,2.0,1.0,0.3,300,60,
+D009,Macros not numeric,210,,44.0,2.0,3.0,0.5,400,120,

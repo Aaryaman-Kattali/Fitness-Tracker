@@ -1,0 +1,23 @@
+include: package:very_good_analysis/analysis_options.yaml
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.drift.dart"
+    - "**/generated_plugin_registrant.dart"
+    # Written by `drift_dev schema generate` — one table-info class per
+    # historical schema version, regenerated wholesale and never edited.
+    - "test/generated/**"
+  errors:
+    # Generated drift/riverpod code lives beside hand-written code; keep the
+    # analyzer strict on everything else.
+    todo: ignore
+
+linter:
+  rules:
+    # Disabled by explicit project decision: this is a single-user private
+    # app, not a published package, so per-member API docs are noise.
+    public_member_api_docs: false
+    # Disabled by explicit project decision: 80 columns fights deeply nested
+    # Cupertino widget trees more than it helps readability here.
+    lines_longer_than_80_chars: false
