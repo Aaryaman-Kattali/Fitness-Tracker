@@ -1,0 +1,15 @@
+-- Full-text search index over Foods.
+--
+-- Declared now so schema version 1 is complete and M3 needs no migration to
+-- add it. Nothing queries it until the food pipeline lands; rows are written
+-- with rowid = foods.id so the documented join works:
+--
+--   SELECT f.* FROM foods_fts
+--   JOIN foods f ON f.id = foods_fts.rowid
+--   WHERE foods_fts MATCH ? ORDER BY rank LIMIT 50;
+
+CREATE VIRTUAL TABLE foods_fts USING fts5 (
+  name,
+  name_local,
+  brand
+);
