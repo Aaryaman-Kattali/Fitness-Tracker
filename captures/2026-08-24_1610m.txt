@@ -1,0 +1,45 @@
+RUN DIAGNOSTICS
+source     live capture during recording
+
+from       2026-08-24 15:25:20 UTC
+to         2026-08-24 15:38:57 UTC
+elapsed    13:37    moving 13:37
+
+FIXES
+  delivered by plugin      913
+  undatable, dropped         0
+  reached pipeline         913
+  accepted                 818  89.6% of delivered
+  out-of-order arrivals     73
+  rejected                  95
+    cold start               3
+    accuracy                91
+    implied speed            0
+    non-monotonic clock      0
+    past the buffer          1
+
+ACCURACY (m)
+  all delivered   min     1.90  p10     2.20  med     2.50  p90    13.57  max   109.01   n=913
+  accepted        min     1.90  p10     2.20  med     2.50  p90     3.00  max     4.90   n=818
+
+INTER-FIX INTERVAL (s)
+  all delivered   min   -10.53  p10     0.45  med     1.00  p90     1.00  max    11.53   n=912
+    over 3 s           5
+  accepted        min     1.00  p10     1.00  med     1.00  p90     1.00  max     1.00   n=817
+    over 3 s           0
+
+SPEED (m/s)
+  smoothed track  min     0.73  p10     1.38  med     1.78  p90     3.02  max     7.65   n=817
+  receiver says   min     0.72  p10     1.13  med     1.42  p90     2.40  max   150.98   n=818
+
+DISTANCE (m)
+  raw, all delivered fixes       7913
+  raw, accepted fixes            1638
+  pipeline, smoothed             1605
+
+LARGEST ACCEPTED STEP
+  7.7 m over 1.0 s = 7.65 m/s at 2026-08-24 15:25:25 UTC
+
+STOPS  (under 0.5 m/s of displacement over 10 s)
+  0 segment(s), 0:00 stopped in total
+  the 10 s window means each edge is late by up to that much

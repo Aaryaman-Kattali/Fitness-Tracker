@@ -1,0 +1,125 @@
+RUN DIAGNOSTICS
+source     live capture during recording
+
+from       2026-09-18 16:32:01 UTC
+to         2026-09-18 16:54:40 UTC
+elapsed    22:39    moving 22:00
+
+FIXES
+  delivered by plugin     1561
+  undatable, dropped         0
+  reached pipeline        1561
+  accepted                1350  86.5% of delivered
+  out-of-order arrivals    198
+  rejected                 211
+    cold start               3
+    accuracy               201
+    other stream             0
+    implied speed            0
+    too soon to pair         0
+    non-monotonic clock      0
+    past the buffer          7   median accuracy    23.50 m
+  "past the buffer" is not data loss. Late arrival is the
+  signature of the other producer on every capture measured: a
+  network position is computed asynchronously and handed over
+  whenever it resolves, and the accuracy gate rejects it one step
+  later anyway. Replayed at 0, 3, 5 and 8 s horizons the accepted
+  count and the distance do not move. The horizon stays at 3 s.
+  A LOW ACCEPTANCE RATE beside a healthy accepted median below is
+  an ENVIRONMENT signal, not a pipeline fault: it counts what the
+  other producer supplied while the receiver had no sky. The lowest
+  recorded here is 68.5%, walking inside a shop.
+
+STREAM DETECTION
+  streams detected  2
+  discriminator     timestamp granularity
+  cut at            n/a — no accuracy cut was used
+  granularity       both classes present and distinct
+  kept, receiver      1353 fixes   median accuracy     3.79 m
+  other producer       201 fixes   median accuracy    22.32 m
+  effect on this run  NONE. It rejected nothing the accuracy
+                      gate had not already taken, so this run
+                      would be identical with the detector off.
+                      maxAccuracyM is separating the producers
+                      on its own and the detector is a backstop.
+  the detector sees every fix that SURVIVES the reorder buffer,
+  before the quality gate. So a fix counted as kept here may still
+  be rejected above, and a fix rejected "past the buffer" is in
+  neither class here — kept + other falls short of reached
+  pipeline by exactly that count.
+
+TIMESTAMP GRANULARITY
+  on a whole second   1355 of 1561   86.8%
+  fractional           206
+  both classes present, which is what the granularity rule needs
+
+ACCURACY (m)
+  all delivered   min     3.79  p10     3.79  med     3.79  p90    17.46  max   200.00   n=1561
+  accepted        min     3.79  p10     3.79  med     3.79  p90     3.79  max     7.05   n=1350
+
+INTER-FIX INTERVAL (s)
+  all delivered   min    -4.98  p10    -0.80  med     1.00  p90     1.81  max     5.98   n=1560
+    over 3 s          11
+  accepted        min     1.00  p10     1.00  med     1.00  p90     1.00  max    11.00   n=1349
+    over 3 s           1
+
+SPEED (m/s)
+  smoothed track  min     0.06  p10     1.14  med     1.45  p90     1.59  max     3.04   n=1349
+  receiver says   min     0.00  p10     1.28  med     1.40  p90     1.51  max     8.07   n=1348
+    dropped as implausible      9   over 12.0 m/s or negative
+  the receiver speed is Doppler and nothing upstream bounds it, so
+  it is refused at the boundary and stored as null rather than
+  clamped. The distribution above is what SURVIVED that and the
+  count is what did not. Runs recorded before 9 Sep 2026 hold
+  unbounded values in run_points.speedMps; see NOTES.md.
+
+DISTANCE (m)
+  raw, all delivered fixes      10670
+  raw, accepted fixes            1889
+  pipeline, smoothed             1887
+
+LARGEST ACCEPTED STEP
+  15.5 m over 11.0 s = 1.41 m/s at 2026-09-18 16:40:00 UTC
+
+MEASURED NOISE PROCESS  (accepted stream, report only)
+  S(T) = E[|p(t+T) - 2p(t) + p(t-T)|^2], which is identically zero
+  for constant velocity. No motion term subtracted, no baseline
+  fitted, no ground truth. Blind to constant velocity, NOT to
+  acceleration: a real turn enters as (a.T^2)^2, so S/T rising is
+  the route, not the receiver.
+       lag   triples       S(T)      D low     D high
+      1.00s    1346      0.09      0.03      0.05
+      2.00s    1342      0.48      0.16      0.24   S/T rose, this is the route
+      3.00s    1338      1.35      0.45      0.68   S/T rose, this is the route
+      5.00s    1330      4.62      1.54      2.31   S/T rose, this is the route
+      8.00s    1318     13.53      4.51      6.76   S/T rose, this is the route
+  inter-fix error sqrt(D(T)/2) = 0.123 to 0.151 m at T = 1.000 s
+  a BRACKET, not a point: S(T) = 4.D(T) - D(2T) identifies D only
+  between the white (S=3D) and random-walk (S=2D) limits. Read at
+  the shortest lag, where the acceleration term has not taken over.
+  A32, same estimator, white end: 0.405 m on 23 Aug, 0.475 m on 24 Aug
+  — one receiver, one loop, two days. That spread is the floor on
+  what a single walk can decide about a constant.
+  derived accelerationNoiseMps2 0.0107 to 0.0130   shipped 0.035
+  derived by holding a.T^2 / inter-fix error fixed at the A32
+  point. A scaling, not the sweep 0.035 came from, and measured to
+  under-predict it by about 2x on the S26: it says nothing about
+  corner-cutting, which is what the sweep scores. REPORT ONLY.
+  no sigma, tau0 split is offered. One noise-consistent lag is one
+  point and two parameters, and lags that all sit in the linear regime
+  constrain sigma^2/tau0 and neither term alone.
+
+STOPS  (under 0.5 m/s of displacement over 10 s)
+  2 segment(s), 0:39 stopped in total
+  these segments partition the stopped time above exactly: each
+  stopped fix owns the interval ending at it, which is the interval
+  moving time declines to count. So they sum to elapsed minus
+  moving, and a stop spanning a hole in the accepted stream is as
+  long as the hole.
+  what the 10 s window costs is the EDGES:
+  a stop is noticed only once a window of displacement falls under
+  the threshold, so each boundary can be late by up to that much.
+  It says nothing about the total of a segment, which is wall-clock
+  between two real fixes.
+     0:28  from 2026-09-18 16:48:11 UTC
+     0:11  from 2026-09-18 16:39:49 UTC

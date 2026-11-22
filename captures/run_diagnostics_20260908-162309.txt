@@ -1,0 +1,108 @@
+RUN DIAGNOSTICS
+source     live capture during recording
+
+from       2026-09-08 16:23:17 UTC
+to         2026-09-08 18:04:01 UTC
+elapsed    100:44    moving 32:01
+
+FIXES
+  delivered by plugin     4428
+  undatable, dropped         0
+  reached pipeline        4428
+  accepted                3034  68.5% of delivered
+  out-of-order arrivals    448
+  rejected                1394
+    cold start               3
+    accuracy              1318
+    other stream             0
+    implied speed            0
+    too soon to pair         0
+    non-monotonic clock      0
+    past the buffer         73
+
+STREAM DETECTION
+  streams detected  2
+  discriminator     timestamp granularity
+  cut at            n/a — no accuracy cut was used
+  granularity       both classes present and distinct
+  kept, receiver      3037 fixes   median accuracy     3.79 m
+  other producer      1318 fixes   median accuracy    14.43 m
+  the detector sees every delivered fix before the quality gate, so
+  a fix counted as kept here may still be rejected above
+
+TIMESTAMP GRANULARITY
+  on a whole second   3528 of 4428   79.7%
+  fractional           900
+  both classes present, which is what the granularity rule needs
+
+ACCURACY (m)
+  all delivered   min     3.79  p10     3.79  med     3.79  p90    18.17  max   300.00   n=4428
+  accepted        min     3.79  p10     3.79  med     3.79  p90     3.79  max     8.98   n=3034
+
+INTER-FIX INTERVAL (s)
+  all delivered   min    -5.08  p10    -0.55  med     1.00  p90     3.97  max    11.19   n=4427
+    over 3 s         676
+  accepted        min     1.00  p10     1.00  med     1.00  p90     1.00  max     1298   n=3033
+    over 3 s          12
+
+SPEED (m/s)
+  smoothed track  min     0.00  p10     0.02  med     0.79  p90     1.58  max     5.71   n=3033
+  receiver says   min     0.00  p10     0.01  med     0.80  p90     1.64  max    47.16   n=3034
+
+DISTANCE (m)
+  raw, all delivered fixes      25216
+  raw, accepted fixes            2524
+  pipeline, smoothed             2416
+
+LARGEST ACCEPTED STEP
+  99.7 m over 117.0 s = 0.85 m/s at 2026-09-08 17:57:11 UTC
+
+MEASURED NOISE PROCESS  (accepted stream, report only)
+  S(T) = E[|p(t+T) - 2p(t) + p(t-T)|^2], which is identically zero
+  for constant velocity. No motion term subtracted, no baseline
+  fitted, no ground truth. Blind to constant velocity, NOT to
+  acceleration: a real turn enters as (a.T^2)^2, so S/T rising is
+  the route, not the receiver.
+       lag   triples       S(T)      D low     D high
+      1.00s    3008      0.16      0.05      0.08
+      2.00s    2984      0.61      0.20      0.31   S/T rose, this is the route
+      3.00s    2961      1.36      0.45      0.68   S/T rose, this is the route
+      5.00s    2915      3.89      1.30      1.94   S/T rose, this is the route
+      8.00s    2854     10.51      3.50      5.25   S/T rose, this is the route
+  inter-fix error sqrt(D(T)/2) = 0.161 to 0.197 m at T = 1.000 s
+  a BRACKET, not a point: S(T) = 4.D(T) - D(2T) identifies D only
+  between the white (S=3D) and random-walk (S=2D) limits. Read at
+  the shortest lag, where the acceleration term has not taken over.
+  A32, same estimator, white end: 0.405 m on 23 Aug, 0.475 m on 24 Aug
+  — one receiver, one loop, two days. That spread is the floor on
+  what a single walk can decide about a constant.
+  derived accelerationNoiseMps2 0.0139 to 0.0171   shipped 0.035
+  derived by holding a.T^2 / inter-fix error fixed at the A32
+  point. A scaling, not the sweep 0.035 came from, and measured to
+  under-predict it by about 2x on the S26: it says nothing about
+  corner-cutting, which is what the sweep scores. REPORT ONLY.
+  no sigma, tau0 split is offered. One noise-consistent lag is one
+  point and two parameters, and lags that all sit in the linear regime
+  constrain sigma^2/tau0 and neither term alone.
+
+STOPS  (under 0.5 m/s of displacement over 10 s)
+  18 segment(s), 37:03 stopped in total
+  the 10 s window means each edge is late by up to that much
+    18:51  from 2026-09-08 17:22:38 UTC
+    16:05  from 2026-09-08 16:34:03 UTC
+     0:33  from 2026-09-08 17:13:08 UTC
+     0:26  from 2026-09-08 18:03:35 UTC
+     0:18  from 2026-09-08 16:33:32 UTC
+     0:15  from 2026-09-08 17:14:48 UTC
+     0:13  from 2026-09-08 17:51:34 UTC
+     0:05  from 2026-09-08 17:45:55 UTC
+     0:04  from 2026-09-08 17:41:39 UTC
+     0:03  from 2026-09-08 17:22:30 UTC
+     0:03  from 2026-09-08 18:03:23 UTC
+     0:01  from 2026-09-08 16:30:26 UTC
+     0:01  from 2026-09-08 16:33:14 UTC
+     0:01  from 2026-09-08 17:12:19 UTC
+     0:01  from 2026-09-08 17:49:47 UTC
+     0:01  from 2026-09-08 17:50:15 UTC
+     0:01  from 2026-09-08 17:54:10 UTC
+     0:01  from 2026-09-08 17:57:11 UTC

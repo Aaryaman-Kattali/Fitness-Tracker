@@ -1,0 +1,137 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Rest-timer notifications. The alert is scheduled as an alarm so it
+         lands at the deadline with the phone in a pocket and the screen off;
+         RECEIVE_BOOT_COMPLETED lets a pending one survive a reboot.
+         USE_EXACT_ALARM rather than SCHEDULE_EXACT_ALARM: a rest timer is an
+         alarm clock, and this is a personal build that is never going through
+         store review, so there is no reason to make the user grant it. -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM"/>
+
+    <!-- M4: Health Connect. Read-only — the app is a consumer of step and
+         active-energy totals, never a source of truth for them, so no WRITE
+         permission is declared and none is requested. -->
+    <uses-permission android:name="android.permission.health.READ_STEPS"/>
+    <uses-permission android:name="android.permission.health.READ_ACTIVE_CALORIES_BURNED"/>
+    <!-- Declared because the health plugin's own docs call for it when
+         reading fitness types. Health Connect grants READ_STEPS through its
+         own sheet, so this is belt-and-braces for the older provider path
+         rather than something the app prompts for at runtime. -->
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>
+
+    <!-- A1b: GPS run recording declares NO permissions here, deliberately.
+         ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION,
+         ACCESS_BACKGROUND_LOCATION, FOREGROUND_SERVICE,
+         FOREGROUND_SERVICE_LOCATION and POST_NOTIFICATIONS all arrive from
+         the tracelet SDK's own manifest through the merger. Verified against
+         the merged output rather than assumed:
+           build/app/intermediates/merged_manifest/debug/.../AndroidManifest.xml
+         Re-declaring them here would be a second copy to keep in step, and
+         the merger already produces one correct list. If a permission ever
+         goes missing after a tracelet upgrade, that merged file is where to
+         look first.
+
+         The SDK also brings INTERNET and ACCESS_NETWORK_STATE for its HTTP
+         sync module, which this app does not use and does not configure. -->
+
+    <!-- A2: OpenStreetMap tiles for the run map. INTERNET already arrives
+         through the tracelet merge, but it is declared here as well because
+         this app now genuinely needs it — relying on a transitive permission
+         for a feature of your own means a dependency change can remove it,
+         and the failure would look like a map that has simply stopped
+         working. This is the only thing in the app that reaches the network;
+         everything else is local, and the map states its own absence rather
+         than blocking on it. -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+
+    <application
+        android:label="fitness_tracker"
+        android:name="${applicationName}"
+        android:icon="@mipmap/ic_launcher">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:taskAffinity=""
+            android:theme="@style/LaunchTheme"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize">
+            <!-- Specifies an Android theme to apply to this Activity as soon as
+                 the Android process has started. This theme is visible to the user
+                 while the Flutter UI initializes. After that, this theme continues
+                 to determine the Window background behind the Flutter UI. -->
+            <meta-data
+              android:name="io.flutter.embedding.android.NormalTheme"
+              android:resource="@style/NormalTheme"
+              />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+            <!-- Health Connect opens this to show why the app wants the
+                 permissions, from inside its own permission sheet. -->
+            <intent-filter>
+                <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE"/>
+            </intent-filter>
+        </activity>
+
+        <!-- Health Connect links to the app's privacy rationale from the
+             permission management screen on Android 14+. Pointed at
+             MainActivity: this is a personal, side-loaded build with no
+             privacy policy to serve, and the alias has to resolve to
+             something or the system logs a permissions-usage error. -->
+        <activity-alias
+            android:name="ViewPermissionUsageActivity"
+            android:exported="true"
+            android:targetActivity=".MainActivity"
+            android:permission="android.permission.START_VIEW_PERMISSION_USAGE">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW_PERMISSION_USAGE"/>
+                <category android:name="android.intent.category.HEALTH_PERMISSIONS"/>
+            </intent-filter>
+        </activity-alias>
+        <!-- Required by flutter_local_notifications to deliver a scheduled
+             alert, and to reschedule pending ones after a reboot. -->
+        <receiver
+            android:exported="false"
+            android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
+        <receiver
+            android:exported="false"
+            android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON"/>
+            </intent-filter>
+        </receiver>
+
+        <!-- Don't delete the meta-data below.
+             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
+        <meta-data
+            android:name="flutterEmbedding"
+            android:value="2" />
+    </application>
+    <!-- Required to query activities that can process text, see:
+         https://developer.android.com/training/package-visibility and
+         https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.
+
+         In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin. -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.PROCESS_TEXT"/>
+            <data android:mimeType="text/plain"/>
+        </intent>
+
+        <!-- Package visibility for Health Connect. Without these the
+             availability check cannot see the provider on Android 11+ and
+             reports "not installed" on a phone that has it. -->
+        <package android:name="com.google.android.apps.healthdata"/>
+        <intent>
+            <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE"/>
+        </intent>
+    </queries>
+</manifest>
